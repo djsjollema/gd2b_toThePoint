@@ -4,7 +4,6 @@ class Point {
     this.y = y;
     this.r = r || 20;
     this.color = color || "#ffff00";
-    console.log("hallo point");
   }
   draw(){
     context.beginPath();
@@ -16,13 +15,33 @@ class Point {
   }
   drag(){
     let drag = false;
-    let x,y;
+    let xMouse,yMouse,dx,dy,distance;
 
     canvas.addEventListener('mousedown',(evt)=>{
       let rect = canvas.getBoundingClientRect();
-      x = evt.clientX - rect.left;
-      y = evt.clientY - rect.top;
-      console.log(x,y);
+      xMouse= evt.clientX - rect.left;
+      yMouse = evt.clientY - rect.top;
+      dx = xMouse - this.x;
+      dy = yMouse - this.y;
+      distance = Math.sqrt(dx*dx + dy*dy);
+      if(distance<=this.r){
+        drag = true;
+      } else{
+        drag = false;
+      }
+    })
+
+    canvas.addEventListener('mousemove',(evt)=>{
+      if(drag){
+        let rect = canvas.getBoundingClientRect();
+        xMouse= evt.clientX - rect.left;
+        yMouse = evt.clientY - rect.top;
+        dx = xMouse - this.x;
+        dy = yMouse - this.y;
+        this.x = xMouse;
+        this.y = yMouse;
+      }
+
     })
 
   }
